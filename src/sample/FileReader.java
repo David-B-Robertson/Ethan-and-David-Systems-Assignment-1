@@ -8,7 +8,7 @@ public class FileReader {
 
 
 
-    private Map<String, Integer> wordCounts;
+    private Map<String, String> wordCounts;
 
     public FileReader() {
         wordCounts = new TreeMap<>();
@@ -23,15 +23,16 @@ public class FileReader {
             for (File current : content) {
                 //gets name of file being read
                 parseFile(current);
-                System.out.println(current.getName());
+                //System.out.println(current.getName());
             }
         } else {
             Scanner scanner = new Scanner(file);
             // scanning token by token
             while (scanner.hasNext()) {
                 String token = scanner.next();
+                String fileName = file.getName();
                 if (isValidWord(token)) {
-                    countWord(token);
+                    countWord(token, fileName);
                 }
             }
         }
@@ -45,12 +46,9 @@ public class FileReader {
 
     }
 
-    private void countWord(String word) {
-        if (wordCounts.containsKey(word)) {
-            int previous = wordCounts.get(word);
-            wordCounts.put(word, previous + 1);
-        } else {
-            wordCounts.put(word, 1);
+    private void countWord(String word, String fileName) {
+        if (!wordCounts.containsKey(word)) {
+            wordCounts.put(word, fileName);
         }
     }
 
@@ -69,11 +67,11 @@ public class FileReader {
 
                 while (keyIterator.hasNext()) {
                     String key = keyIterator.next();
-                    int count = wordCounts.get(key);
+                    String count = wordCounts.get(key);
                     // testing minimum number of occurances
-                    if (count >= minCount) {
+
                         fileOutput.println(key + ": " + count);
-                    }
+
                 }
 
                 fileOutput.close();
