@@ -8,14 +8,29 @@ public class FileReader {
 
 
 
-    private Map<String, String> wordCounts;
+    private Map<String, Integer> wordCounts;
+    private Map<String, Integer> hamWordCounts;
+    private Map<String, Integer> spamWordCounts;
 
     public FileReader() {
         wordCounts = new TreeMap<>();
+        hamWordCounts = new TreeMap<>();
+        spamWordCounts = new TreeMap<>();
     }
 
     public void parseFile(File file) throws IOException {
         System.out.println("Starting parsing the file:" + file.getAbsolutePath());
+        System.out.println(file);
+
+        File hamDir = new File("../train/ham/..");
+        File ham2Dir = new File("../train/ham2/..");
+        File spamDir = new File("../train/spam/..");
+
+        if(file == hamDir || file == ham2Dir){
+          wordCounts = hamWordCounts;
+        } else if(file == spamDir){
+            wordCounts = spamWordCounts;
+        }
 
         if (file.isDirectory()) {
             //parse each file inside the directory
@@ -26,13 +41,19 @@ public class FileReader {
                 //System.out.println(current.getName());
             }
         } else {
+
+            //creating temp list
+            List<String> temp = new ArrayList<>();
+
             Scanner scanner = new Scanner(file);
             // scanning token by token
             while (scanner.hasNext()) {
                 String token = scanner.next();
-                String fileName = file.getName();
-                if (isValidWord(token)) {
-                    countWord(token, fileName);
+                //String fileName = file.getName();
+
+                if (isValidWord(token) && !temp.contains(token)){
+                    countWord(token);
+                    temp.add(token);
                 }
             }
         }
@@ -46,9 +67,12 @@ public class FileReader {
 
     }
 
-    private void countWord(String word, String fileName) {
-        if (!wordCounts.containsKey(word)) {
-            wordCounts.put(word, fileName);
+    private void countWord(String word){
+        if(wordCounts.containsKey(word)){
+            int previous = wordCounts.get(word);
+            wordCounts.put(word, previous+1);
+        }else{
+            wordCounts.put(word, 1);
         }
     }
 
@@ -57,21 +81,34 @@ public class FileReader {
         System.out.println("Saving word counts to file:" + output.getAbsolutePath());
         System.out.println("Total words:" + wordCounts.keySet().size());
 
+        File hamOut = new File("../Assignment-1/output1");
+        File ham2Out = new File("../Assignment-1/output2");
+        File spamOut = new File("../Assignment-1/output3");
+
+
         if (!output.exists()) {
             output.createNewFile();
             if (output.canWrite()) {
+
                 PrintWriter fileOutput = new PrintWriter(output);
 
+                System.out.println("OUTPUT ="+output);
+                System.out.println("SPAMOUT ="+spamOut);
+
+                if(output == spamOut){
+                    System.out.println("TEST");
+                    wordCounts = spamWordCounts;
+                }
                 Set<String> keys = wordCounts.keySet();
                 Iterator<String> keyIterator = keys.iterator();
 
                 while (keyIterator.hasNext()) {
                     String key = keyIterator.next();
-                    String count = wordCounts.get(key);
+                    int count = wordCounts.get(key);
                     // testing minimum number of occurances
-
+                    if(count>=minCount){
                         fileOutput.println(key + ": " + count);
-
+                    }
                 }
 
                 fileOutput.close();

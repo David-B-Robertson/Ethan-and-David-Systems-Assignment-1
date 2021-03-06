@@ -30,8 +30,37 @@ public class Main extends Application {
         FileReader wordCounter = new FileReader();
         System.out.println("Hello");
         try{
-            wordCounter.parseFile(dataDir);
-            wordCounter.outputWordCount(2, outFile);
+
+            File hamDir = new File(dataDir+"/train/ham");
+            File ham2Dir = new File(dataDir+"/train/ham2");
+            File spamDir = new File(dataDir+"/train/spam");
+
+
+
+
+
+            //File hamOut = new File("../Assignment-1/output1");
+            File ham2Out = new File("../Assignment-1/output2");
+            File spamOut = new File("../Assignment-1/output3");
+
+            System.out.println("PARSING "+hamDir);
+            wordCounter.parseFile(hamDir);
+          //  wordCounter.outputWordCount(2, hamOut);
+
+            System.out.println("PARSING "+ham2Dir);
+            wordCounter.parseFile(ham2Dir);
+            wordCounter.outputWordCount(2, ham2Out);
+
+            System.out.println("PARSING "+spamDir);
+            wordCounter.parseFile(spamDir);
+            wordCounter.outputWordCount(2, spamOut);
+
+
+
+
+
+
+
         }catch(FileNotFoundException e){
             System.err.println("Invalid input dir: " + dataDir.getAbsolutePath());
             e.printStackTrace();
