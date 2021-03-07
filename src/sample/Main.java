@@ -16,8 +16,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("100% Best Most Efficient Spam Filter™");
+        primaryStage.setScene(new Scene(root, 400, 475));
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File("."));
@@ -69,19 +69,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-
-
-
-
-        /*
-        if(args.length < 2){
-            System.err.println("Usage: java WordCounter <inputDir> <outfile>");
-            System.exit(0);
-        }*/
-
-
-
-
         launch(args);
     }
 
