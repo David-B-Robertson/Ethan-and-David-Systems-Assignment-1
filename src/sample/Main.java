@@ -35,31 +35,26 @@ public class Main extends Application {
             File ham2Dir = new File(dataDir+"/train/ham2");
             File spamDir = new File(dataDir+"/train/spam");
 
-
-
-
-
-            //File hamOut = new File("../Assignment-1/output1");
-            File ham2Out = new File("../Assignment-1/output2");
-            File spamOut = new File("../Assignment-1/output3");
+            File ham2Out = new File("../Assignment-1/hamMap");
+            File spamOut = new File("../Assignment-1/spamMap");
 
             System.out.println("PARSING "+hamDir);
-            wordCounter.parseFile(hamDir);
-          //  wordCounter.outputWordCount(2, hamOut);
-
             System.out.println("PARSING "+ham2Dir);
-            wordCounter.parseFile(ham2Dir);
-            wordCounter.outputWordCount(2, ham2Out);
+
+            //parse ham1 & 2
+            wordCounter.parseHam(hamDir);
+            wordCounter.parseHam(ham2Dir);
+
+            //output ham
+            wordCounter.outputHamWordCount(2, ham2Out);
 
             System.out.println("PARSING "+spamDir);
-            wordCounter.parseFile(spamDir);
-            wordCounter.outputWordCount(2, spamOut);
 
+            //parse spam
+            wordCounter.parseSpam(spamDir);
 
-
-
-
-
+            //output spam
+            wordCounter.outputSpamWordCount(2, spamOut);
 
         }catch(FileNotFoundException e){
             System.err.println("Invalid input dir: " + dataDir.getAbsolutePath());
