@@ -2,20 +2,26 @@ package sample;
 
 import javafx.stage.DirectoryChooser;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class FileReader {
 
 
 
-    private Map<String, Integer> wordCounts;
+
     private Map<String, Integer> hamWordCounts;
     private Map<String, Integer> spamWordCounts;
-
+    private Map<String, Double> spamProbabilty;
+    private Map<String, Double> hamProbabilty;
+    private Map<String, Double> probailityWordIsSpam;
     public FileReader() {
-        wordCounts = new TreeMap<>();
+
         hamWordCounts = new TreeMap<>();
         spamWordCounts = new TreeMap<>();
+        spamProbabilty = new TreeMap<>();
+        hamProbabilty = new TreeMap<>();
+        probailityWordIsSpam = new TreeMap<>();
     }
 
     public void parseHam(File file) throws IOException {
@@ -46,6 +52,8 @@ public class FileReader {
                     temp.add(token);
                 }
             }
+
+
         }
     }
 
@@ -162,5 +170,73 @@ public class FileReader {
         } else {
             System.out.println("Error: the output file already exists: " + output.getAbsolutePath());
         }
+    }
+
+    public void spamProb() {
+        Set<String> keys = spamWordCounts.keySet();
+        Iterator<String> keyIterator = keys.iterator();
+
+        while (keyIterator.hasNext()) {
+            String key = keyIterator.next();
+
+            Double count = 502.0;
+            // testing minimum number of occurances
+
+            int spamKey = spamWordCounts.get(key);
+            double fileMath = spamKey / count;
+            spamProbabilty.put(key, fileMath);
+
+
+
+        }
+    }
+
+    public void hamProb(){
+        Set<String> keys = hamWordCounts.keySet();
+        Iterator<String> keyIterator = keys.iterator();
+
+        while (keyIterator.hasNext()) {
+            String key = keyIterator.next();
+
+            Double count = 2754.0;
+            // testing minimum number of occurances
+
+            int hamKey = hamWordCounts.get(key);
+            double fileMath = hamKey/count;
+            hamProbabilty.put(key,fileMath);
+        }
+
+
+    }
+
+    public void createWordSpam(){
+
+        Set<String> hamkeys = hamWordCounts.keySet();
+        Iterator<String> hamkeyIterator = hamkeys.iterator();
+
+        while (hamkeyIterator.hasNext()) {
+            String key = hamkeyIterator.next();
+
+
+            Double spamKey = spamProbabilty.get(key);
+            Double hamKey = hamProbabilty.get(key);
+            double fileMath = spamKey/(spamKey +hamKey);
+            probailityWordIsSpam.put(key,fileMath);
+        }
+
+        Set<String> spamkeys = spamWordCounts.keySet();
+        Iterator<String> spamkeyIterator = spamkeys.iterator();
+
+        while (spamkeyIterator.hasNext()) {
+            String key = spamkeyIterator.next();
+
+
+            Double spamKey = spamProbabilty.get(key);
+            Double hamKey = hamProbabilty.get(key);
+            double fileMath = spamKey/(spamKey +hamKey);
+            probailityWordIsSpam.put(key,fileMath);
+        }
+
+
     }
 }

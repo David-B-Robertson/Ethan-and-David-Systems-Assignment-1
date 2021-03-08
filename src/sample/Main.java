@@ -25,7 +25,7 @@ public class Main extends Application {
 
 
         File dataDir = mainDirectory;
-        File outFile = new File("../Assignment-1/output");
+
 
         FileReader wordCounter = new FileReader();
         System.out.println("Hello");
@@ -35,8 +35,8 @@ public class Main extends Application {
             File ham2Dir = new File(dataDir+"/train/ham2");
             File spamDir = new File(dataDir+"/train/spam");
 
-            File ham2Out = new File("../Assignment-1/hamMap");
-            File spamOut = new File("../Assignment-1/spamMap");
+            File ham2Out = new File("../SystemsAssig1/hamMap");
+            File spamOut = new File("../SystemsAssig1/spamMap");
 
             System.out.println("PARSING "+hamDir);
             System.out.println("PARSING "+ham2Dir);
@@ -55,6 +55,12 @@ public class Main extends Application {
 
             //output spam
             wordCounter.outputSpamWordCount(2, spamOut);
+
+
+            //probability counting
+            wordCounter.spamProb();
+            wordCounter.hamProb();
+
 
         }catch(FileNotFoundException e){
             System.err.println("Invalid input dir: " + dataDir.getAbsolutePath());
